@@ -11,3 +11,5 @@ project (moneymaker,c++)
 #add_executable(moneymaker moneymakerapp.cpp moneymaker.cpp moneymaker.res)
 add_executable(moneymaker moneymakerapp.cpp moneymaker.cpp moneymaker.rc)
 target_link_libraries(moneymaker user32 gdi32)
+
+add_executable(myjson myjson.cpp)
