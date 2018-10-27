@@ -1,6 +1,7 @@
 // moneymaker.cpp : Defines the entry point for the application.
 //
 
+#include <iostream>
 #include <windows.h>
 #include <wchar.h>
 
@@ -40,7 +41,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
     // Perform application initialization:
     if (!InitInstance (hInstance, nCmdShow))
     {
-    	puts("instance");
+		puts("instance");
         return FALSE;
     }
 
@@ -103,17 +104,24 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
+   extern void LoadAccounts();
+   LoadAccounts();
+   try {
+
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
-	  puts("Window");
+	  std::cout << "Window" << std::endl;
       return FALSE;
    }
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
+   } catch (...) {
+	   std::cout <<"Exception after window created" << std::endl;
+   }
 
    return TRUE;
 }
@@ -153,7 +161,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
-			DrawMoney(hdc);
+            try {
+				DrawMoney(hdc);
+            } catch (...) {
+				std::cout << "Exception during painting" << std::endl;
+            }
             // TODO: Add any drawing code that uses hdc here...
             EndPaint(hWnd, &ps);
         }
